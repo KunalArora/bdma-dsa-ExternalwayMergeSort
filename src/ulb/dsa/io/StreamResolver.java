@@ -18,9 +18,9 @@ public class StreamResolver {
             case 2:
                 return new InputStream2();
             case 3:
-                return new InputStream3();
+                return new InputStream3(bufferSize);
             case 4:
-                return new InputStream4();
+                return new InputStream4(bufferSize);
         }
         return null;
     }
@@ -32,9 +32,9 @@ public class StreamResolver {
             case 2:
                 return new OutputStream2();
             case 3:
-                return new OutputStream3();
+                return new OutputStream3(bufferSize);
             case 4:
-                return new OutputStream4();
+                return new OutputStream4(bufferSize);
         }
         return null;
     }
