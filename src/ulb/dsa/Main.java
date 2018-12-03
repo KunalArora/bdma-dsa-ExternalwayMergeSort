@@ -1,6 +1,9 @@
 package ulb.dsa;
 
 import ulb.dsa.io.StreamResolver;
+import ulb.dsa.io.InputStream;
+import ulb.dsa.io.OutputStream;
+import ulb.dsa.io.InputStream;
 import ulb.dsa.test.TestStreams;
 
 public class Main {
@@ -21,17 +24,20 @@ public class Main {
         int numberOfIOStreams = Integer.parseInt(args[2]);
         int bufferSize = Integer.parseInt(args[3]);
         StreamResolver streamResolver = new StreamResolver(streamType, numberOfIOStreams, bufferSize);
-
+        
         //Use to test the different streams
         //TestStreams.testStreams(pathToDataFile, "result.txt", streamResolver);
 
         int initialMemAvailable = Integer.parseInt(args[4]);
         int numberOfSortingStreams = Integer.parseInt(args[5]);
+        //System.out.println(streamResolver);
+        //InputStream is = streamResolver.newInputStream();
+        //is.open(pathToDataFile);
+        //while (!is.endOfStream()){
+        //    System.out.println(is.readNext());
+        //}
 
         MultiwayMerge multiwayMerge = new MultiwayMerge(streamResolver, initialMemAvailable, numberOfSortingStreams);
         multiwayMerge.sort(pathToDataFile);
-
-
-
     }
 }
