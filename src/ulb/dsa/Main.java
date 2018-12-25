@@ -13,8 +13,8 @@ public class Main {
      * path_to_data_file
      * stream_type -> Integer ∈ {1,2,3,4})
      * [k]number_of_IO_streams -> Integer
-     * [B]buffer_size -> Integer (kbytes)
-     * [M]initial_memory_available -> Integer (kbytes)
+     * [B]buffer_size -> Integer (bytes)
+     * [M]initial_memory_available -> Integer (bytes)
      * [d]number_of_sorting_streams -> Integer
      */
     public static void main(String[] args) {
@@ -23,19 +23,11 @@ public class Main {
         int streamType = Integer.parseInt(args[1]);
         int numberOfIOStreams = Integer.parseInt(args[2]);
         int bufferSize = Integer.parseInt(args[3]);
-        StreamResolver streamResolver = new StreamResolver(streamType, numberOfIOStreams, bufferSize);
+        StreamResolver streamResolver = new StreamResolver(streamType, bufferSize);
         
-        //Use to test the different streams
-        //TestStreams.testStreams(pathToDataFile, "result.txt", streamResolver);
 
         int initialMemAvailable = Integer.parseInt(args[4]);
         int numberOfSortingStreams = Integer.parseInt(args[5]);
-        //System.out.println(streamResolver);
-        //InputStream is = streamResolver.newInputStream();
-        //is.open(pathToDataFile);
-        //while (!is.endOfStream()){
-        //    System.out.println(is.readNext());
-        //}
 
         MultiwayMerge multiwayMerge = new MultiwayMerge(streamResolver, initialMemAvailable, numberOfSortingStreams);
         multiwayMerge.sort(pathToDataFile);

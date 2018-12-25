@@ -11,7 +11,7 @@ public class OutputStream3 implements OutputStream {
     private ArrayDeque<Integer> buffer;
 
     OutputStream3(int bufferSize) {
-        this.bSize = bufferSize;
+        this.bSize = bufferSize / 4;
         buffer = new ArrayDeque<>(bSize);
     }
 
@@ -30,9 +30,8 @@ public class OutputStream3 implements OutputStream {
         if(buffer.size() == bSize) {
             flushBuffer();
             buffer.clear();
-        } else {
-            buffer.offer(number);
         }
+        buffer.offer(number);
     }
 
     @Override

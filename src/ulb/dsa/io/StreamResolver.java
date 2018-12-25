@@ -2,12 +2,10 @@ package ulb.dsa.io;
 
 public class StreamResolver {
     private int streamType;
-    private int numberOfIOStreams;
     private int bufferSize;
 
-    public StreamResolver(int streamType, int numberOfIOStreams, int bufferSize) {
+    public StreamResolver(int streamType, int bufferSize) {
         this.streamType = streamType;
-        this.numberOfIOStreams = numberOfIOStreams;
         this.bufferSize = bufferSize;
     }
 

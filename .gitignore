@@ -3,3 +3,5 @@ project.iml
 out/
 *.class
 output/
+tmp/*
+.DS_Store

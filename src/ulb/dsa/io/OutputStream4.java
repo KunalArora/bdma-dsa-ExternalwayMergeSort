@@ -14,10 +14,11 @@ public class OutputStream4 implements OutputStream {
     private FileChannel fileChannel;
     private int bSize;
     private int nextIndex;
+    private long numWrites = 0;
 
 
     OutputStream4(int bufferSize) {
-        this.bSize = bufferSize;
+        this.bSize = (bufferSize / 4) * 4;
     }
 
     @Override
@@ -38,10 +39,12 @@ public class OutputStream4 implements OutputStream {
     public void write(int number) {
         try {
             if(mappedByteBuffer == null || mappedByteBuffer.capacity() == mappedByteBuffer.position()) {
-                mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_WRITE, nextIndex*bSize*Integer.BYTES, Math.max(bSize*Integer.BYTES, fileChannel.size()));
+                mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_WRITE, nextIndex*bSize, bSize);
                 nextIndex+=1;
-                mappedByteBuffer.putInt(number);
             }
+
+            mappedByteBuffer.putInt(number);
+            numWrites++;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,6 +54,7 @@ public class OutputStream4 implements OutputStream {
     public void close() {
         try {
             mappedByteBuffer.clear();
+            fileChannel.truncate(numWrites*Integer.BYTES);
             fileChannel.close();
             randomAccessFile.close();
         } catch (IOException e) {

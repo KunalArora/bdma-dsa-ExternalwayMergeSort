@@ -37,7 +37,7 @@ public class MultiwayMerge {
         int cntr_file = 0;
 
         inputStream.open(pathToDataFile);
-        tmpOut.create("./tmp" + cntr_file + ".txt");
+        tmpOut.create("tmp/tmp" + cntr_file + ".txt");
         
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         LinkedList<InputStream> stream_hld = new LinkedList<InputStream>();
@@ -56,10 +56,10 @@ public class MultiwayMerge {
                 }
                 tmpOut.close();
                 tmpIn = streamResolver.newInputStream();
-                tmpIn.open("./tmp" + cntr_file + ".txt");
+                tmpIn.open("tmp/tmp" + cntr_file + ".txt");
                 stream_hld.addLast(tmpIn);
                 ++cntr_file;
-                tmpOut.create("./tmp" + cntr_file + ".txt");
+                tmpOut.create("tmp/tmp" + cntr_file + ".txt");
             }
         }
 
@@ -70,7 +70,7 @@ public class MultiwayMerge {
             }
             tmpOut.close();
             tmpIn = streamResolver.newInputStream();
-            tmpIn.open("./tmp" + cntr_file + ".txt");
+            tmpIn.open("tmp/tmp" + cntr_file + ".txt");
             stream_hld.addLast(tmpIn);
         }
 
@@ -92,13 +92,13 @@ public class MultiwayMerge {
                 merge(inps, "./RES.txt");
             }
             else{
-                merge(inps, "./tmp" + cntr_file + ".txt");
+                merge(inps, "tmp/tmp" + cntr_file + ".txt");
             }
 
             if (stream_hld.size() > 0){
 
                 tmpIn = streamResolver.newInputStream();
-                tmpIn.open("./tmp" + cntr_file + ".txt");
+                tmpIn.open("tmp/tmp" + cntr_file + ".txt");
                 stream_hld.addLast(tmpIn);
 
             }

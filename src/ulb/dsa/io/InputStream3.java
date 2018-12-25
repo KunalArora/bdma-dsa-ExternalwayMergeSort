@@ -11,7 +11,7 @@ public class InputStream3 implements InputStream {
     private ArrayDeque<Integer> buffer;
 
     InputStream3(int bufferSize) {
-        this.bSize = bufferSize;
+        this.bSize = bufferSize / 4;
     }
 
     @Override

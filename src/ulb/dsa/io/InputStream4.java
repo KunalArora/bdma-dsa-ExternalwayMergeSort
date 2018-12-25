@@ -17,14 +17,14 @@ public class InputStream4 implements InputStream {
     int bSize;
 
     InputStream4(int bufferSize) {
-        this.bSize = bufferSize;
+        this.bSize = (bufferSize / 4) * 4;
     }
 
     @Override
     public void open(String filePath) {
         try {
             File file = new File(filePath);
-            randomAccessFile = new RandomAccessFile(file, "r");
+            randomAccessFile = new RandomAccessFile(file, "rw");
             fileChannel = randomAccessFile.getChannel();
             upperBound = Math.min(fileChannel.size(), bSize);
             mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, upperBound);
@@ -38,6 +38,11 @@ public class InputStream4 implements InputStream {
 
     @Override
     public int readNext() {
+        if (!mappedByteBuffer.hasRemaining()) {
+            if (allocate()) {
+                throw new RuntimeException("Reading from a empty stream");
+            }
+        }
         return mappedByteBuffer.getInt();
     }
 
