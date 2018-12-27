@@ -12,8 +12,9 @@ public class MultiwayMerge {
     private StreamResolver streamResolver;
     private int initialMemAvailable;
     private int numberOfSortingStreams;
+    private int numberOfIOStreams;
 
-    public MultiwayMerge(StreamResolver streamResolver, int initialMemAvailable, int numberOfSortingStreams) {
+    public MultiwayMerge(StreamResolver streamResolver, int initialMemAvailable, int numberOfSortingStreams, int numberOfIOStreams) {
 
         if (numberOfSortingStreams < 2){
             throw new IllegalArgumentException("Well and how would you sort array in memory with a single sorting stream?");
@@ -26,12 +27,13 @@ public class MultiwayMerge {
         this.streamResolver = streamResolver;
         this.initialMemAvailable = initialMemAvailable;
         this.numberOfSortingStreams = numberOfSortingStreams;
+        this.numberOfIOStreams = numberOfIOStreams;
     }
 
     public void sort(String pathToDataFile) {
 
         InputStream inputStream = streamResolver.newInputStream();
-        InputStream tmpIn = streamResolver.newInputStream();
+        InputStream tmpIn;
         OutputStream tmpOut = streamResolver.newOutputStream();
 
         int cntr_file = 0;
@@ -40,9 +42,7 @@ public class MultiwayMerge {
         tmpOut.create("tmp/tmp" + cntr_file + ".txt");
         
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-        LinkedList<InputStream> stream_hld = new LinkedList<InputStream>();
-
-        int cnt_inp = 0;
+        LinkedList<String> stream_hld = new LinkedList<>();
 
         while (!inputStream.endOfStream()) {
 
@@ -52,12 +52,11 @@ public class MultiwayMerge {
             if (pq.size() == this.initialMemAvailable){
                 while (!pq.isEmpty()) {
                     tmpOut.write(pq.remove());
-                    ++cnt_inp;
                 }
                 tmpOut.close();
-                tmpIn = streamResolver.newInputStream();
-                tmpIn.open("tmp/tmp" + cntr_file + ".txt");
-                stream_hld.addLast(tmpIn);
+                //tmpIn = streamResolver.newInputStream();
+                //tmpIn.open("tmp/tmp" + cntr_file + ".txt");
+                stream_hld.addLast("tmp/tmp" + cntr_file + ".txt");
                 ++cntr_file;
                 tmpOut.create("tmp/tmp" + cntr_file + ".txt");
             }
@@ -66,23 +65,31 @@ public class MultiwayMerge {
         if (pq.size() != 0){
             while (!pq.isEmpty()) {
                 tmpOut.write(pq.remove());
-                ++cnt_inp;
             }
             tmpOut.close();
-            tmpIn = streamResolver.newInputStream();
-            tmpIn.open("tmp/tmp" + cntr_file + ".txt");
-            stream_hld.addLast(tmpIn);
+            //tmpIn = streamResolver.newInputStream();
+            //tmpIn.open("tmp/tmp" + cntr_file + ".txt");
+            stream_hld.addLast("tmp/tmp" + cntr_file + ".txt");
+        }
+
+        int stream_bound;
+        if (this.numberOfIOStreams > this.numberOfSortingStreams){
+            stream_bound = this.numberOfSortingStreams;
+        }
+        else{
+            stream_bound = this.numberOfIOStreams;
         }
 
         while(true){
             List<InputStream> inps = new ArrayList(this.numberOfSortingStreams);
-            
-            int lcl_cnt = 0;
 
-            for (int j = 0; j < this.numberOfSortingStreams; ++j){
+
+
+            for (int j = 0; j < stream_bound; ++j){
                 if (stream_hld.size() > 0){
-                    inps.add(stream_hld.removeFirst());
-                    ++lcl_cnt;
+                    tmpIn = streamResolver.newInputStream();
+                    tmpIn.open(stream_hld.removeFirst());
+                    inps.add(tmpIn);
                 }
             }
 
@@ -97,9 +104,9 @@ public class MultiwayMerge {
 
             if (stream_hld.size() > 0){
 
-                tmpIn = streamResolver.newInputStream();
-                tmpIn.open("tmp/tmp" + cntr_file + ".txt");
-                stream_hld.addLast(tmpIn);
+                //tmpIn = streamResolver.newInputStream();
+                //tmpIn.open("tmp/tmp" + cntr_file + ".txt");
+                stream_hld.addLast("tmp/tmp" + cntr_file + ".txt");
 
             }
             else{
@@ -117,7 +124,7 @@ public class MultiwayMerge {
         PriorityQueue<Integer> pQueue = new PriorityQueue<>(); 
         List<Integer> check_elems = new ArrayList(inps.size());
 
-        int top_elem, top_ind;
+        int top_elem;
 
         for (int i = 0; i < inps.size(); ++i){
             check_elems.add(inps.get(i).readNext());
