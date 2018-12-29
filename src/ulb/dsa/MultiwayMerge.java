@@ -81,16 +81,18 @@ public class MultiwayMerge {
             stream_bound = this.numberOfIOStreams;
         }
 
-        while(true){
-            List<InputStream> inps = new ArrayList(this.numberOfSortingStreams);
+        List<InputStream> inps = new ArrayList(stream_bound);
+        for (int j = 0; j < stream_bound; ++j) {
+            tmpIn = streamResolver.newInputStream();
+            inps.add(tmpIn);
+        }
 
+        while(true){
 
 
             for (int j = 0; j < stream_bound; ++j){
                 if (stream_hld.size() > 0){
-                    tmpIn = streamResolver.newInputStream();
-                    tmpIn.open(stream_hld.removeFirst());
-                    inps.add(tmpIn);
+                    inps.get(j).open(stream_hld.removeFirst());
                 }
             }
 
@@ -128,6 +130,9 @@ public class MultiwayMerge {
         int top_elem;
 
         for (int i = 0; i < inps.size(); ++i){
+            if (inps.get(i).endOfStream()){
+                break;
+            }
             check_elems.add(inps.get(i).readNext());
             pQueue.add(check_elems.get(i));
         }

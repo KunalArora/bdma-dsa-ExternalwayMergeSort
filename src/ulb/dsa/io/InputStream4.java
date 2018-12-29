@@ -23,6 +23,12 @@ public class InputStream4 implements InputStream {
     @Override
     public void open(String filePath) {
         try {
+            try{
+                randomAccessFile.close();
+            }
+            catch (Throwable th){
+
+            }
             File file = new File(filePath);
             randomAccessFile = new RandomAccessFile(file, "rw");
             fileChannel = randomAccessFile.getChannel();
