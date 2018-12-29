@@ -1,6 +1,8 @@
 package ulb.dsa.benchmark;
 
-import ulb.dsa.io.*;
+import ulb.dsa.io.InputStream;
+import ulb.dsa.io.OutputStream;
+import ulb.dsa.io.StreamResolver;
 
 public class IOBenchmark {
 
@@ -18,11 +20,11 @@ public class IOBenchmark {
         OutputStream outs[] = new OutputStream[numStreams];
         for (int i = 0; i < numStreams; i++) {
             InputStream inputStream = streamResolver.newInputStream();
-            inputStream.open("data/" + fileSize + "_" + i +".txt");
+            inputStream.open("../data/" + fileSize + "_" + i +".txt");
             ins[i] = inputStream;
 
             OutputStream outputStream = streamResolver.newOutputStream();
-            outputStream.create("tmp/" + i + ".txt");
+            outputStream.create("../tmp/" + i + ".txt");
             outs[i] = outputStream;
         }
 
