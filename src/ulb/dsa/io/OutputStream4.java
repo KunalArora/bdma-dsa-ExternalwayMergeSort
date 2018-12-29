@@ -53,10 +53,15 @@ public class OutputStream4 implements OutputStream {
     @Override
     public void close() {
         try {
+            mappedByteBuffer.force();
             mappedByteBuffer.clear();
             fileChannel.truncate(numWrites*Integer.BYTES);
             fileChannel.close();
             randomAccessFile.close();
+            mappedByteBuffer = null;
+            fileChannel = null;
+            numWrites = 0;
+            randomAccessFile = null;
         } catch (IOException e) {
             e.printStackTrace();
         }

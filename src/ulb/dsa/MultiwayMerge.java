@@ -58,6 +58,7 @@ public class MultiwayMerge {
                 //tmpIn.open("tmp/tmp" + cntr_file + ".txt");
                 stream_hld.addLast("tmp/tmp" + cntr_file + ".txt");
                 ++cntr_file;
+//                tmpOut = streamResolver.newOutputStream();
                 tmpOut.create("tmp/tmp" + cntr_file + ".txt");
             }
         }
