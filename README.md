@@ -9,5 +9,5 @@ To compile the project:
 ```
  Example of run:
 ```
-    java ulb/dsa/Main "`pwd`/../data/data.txt" 1 1 1024 1024 10
+    java ulb/dsa/Main "`pwd`/../data/100000.txt" 4 10 100000 1000 2
 ```
