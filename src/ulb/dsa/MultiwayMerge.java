@@ -39,7 +39,7 @@ public class MultiwayMerge {
         int cntr_file = 0;
 
         inputStream.open(pathToDataFile);
-        tmpOut.create("tmp/tmp" + cntr_file + ".txt");
+        tmpOut.create("../tmp/tmp" + cntr_file + ".txt");
         
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         LinkedList<String> stream_hld = new LinkedList<>();
@@ -54,12 +54,9 @@ public class MultiwayMerge {
                     tmpOut.write(pq.remove());
                 }
                 tmpOut.close();
-                //tmpIn = streamResolver.newInputStream();
-                //tmpIn.open("tmp/tmp" + cntr_file + ".txt");
-                stream_hld.addLast("tmp/tmp" + cntr_file + ".txt");
+                stream_hld.addLast("../tmp/tmp" + cntr_file + ".txt");
                 ++cntr_file;
-//                tmpOut = streamResolver.newOutputStream();
-                tmpOut.create("tmp/tmp" + cntr_file + ".txt");
+                tmpOut.create("../tmp/tmp" + cntr_file + ".txt");
             }
         }
 
@@ -68,9 +65,7 @@ public class MultiwayMerge {
                 tmpOut.write(pq.remove());
             }
             tmpOut.close();
-            //tmpIn = streamResolver.newInputStream();
-            //tmpIn.open("tmp/tmp" + cntr_file + ".txt");
-            stream_hld.addLast("tmp/tmp" + cntr_file + ".txt");
+            stream_hld.addLast("../tmp/tmp" + cntr_file + ".txt");
         }
 
         int stream_bound;
@@ -102,14 +97,12 @@ public class MultiwayMerge {
                 merge(inps, "./RES.txt");
             }
             else{
-                merge(inps, "tmp/tmp" + cntr_file + ".txt");
+                merge(inps, "../tmp/tmp" + cntr_file + ".txt");
             }
 
             if (stream_hld.size() > 0){
 
-                //tmpIn = streamResolver.newInputStream();
-                //tmpIn.open("tmp/tmp" + cntr_file + ".txt");
-                stream_hld.addLast("tmp/tmp" + cntr_file + ".txt");
+                stream_hld.addLast("../tmp/tmp" + cntr_file + ".txt");
 
             }
             else{

@@ -35,19 +35,6 @@ public class Main {
         MultiwayMerge multiwayMerge = new MultiwayMerge(streamResolver, initialMemAvailable, numberOfSortingStreams, numberOfIOStreams);
         multiwayMerge.sort(pathToDataFile);
 
-        InputStream inputStream = streamResolver.newInputStream();
-        inputStream.open("./RES.txt");
-
-        int cnt = 0;
-        ArrayList<Integer> check_res = new ArrayList<>();
-        while (!inputStream.endOfStream()) {
-            int tmp = inputStream.readNext();
-            check_res.add(tmp);
-            ++cnt;
-        }
-
-        System.out.println("Total len of res file:" + cnt);
-        System.out.println("Result is sorted:" + isCollectionSorted(check_res));
     }
 
     static private boolean isCollectionSorted(List list) {
